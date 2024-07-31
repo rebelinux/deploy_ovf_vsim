@@ -5,7 +5,7 @@
   wait_for: 
     timeout: '{{ node_setup_delay|default(60) }}'
   delegate_to: localhost
-  when: (ontap_node_mgmt_ip|default("") != "") or (node2_mgmt_ip|default("") != "")
+  when: (ontap_node_mgmt_ip|default("") != "") or (partner_ip|default("") != "")
 
 - name: Complete Node Setup on node2
   community.vmware.vmware_guest_sendkey:
@@ -22,11 +22,11 @@
     - "cluster setup"
     - "yes"
     - "e0c" # node mgmt port
-    - "{{node2_mgmt_ip|default('')}}"
+    - "{{partner_ip|default('')}}"
     - "{{ontap_netmask}}"
     - "{{ontap_gateway}}"
     - "" # this completes the node setup phase
-  when: node2_mgmt_ip|default("") != ""
+  when: partner_ip|default("") != ""
 
 # Send keys via HID to complete setup at the vidconsole
 - name: Complete Node Setup

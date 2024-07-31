@@ -1,0 +1,41 @@
+---
+- hosts: localhost 
+  name: Deploy a 2-node ONTAP Simulator HA Pair (experimental)
+  gather_facts: false
+  vars: 
+    vcenter_address:  "vcenter-01v.pharmax.local"
+    vcenter_username: "administrator@vsphere.local"
+    vcenter_password: "P@ssw0rd"
+    vcenter_datacenter: "PHARMAX-VSI-DC"
+    vcenter_cluster:    "RegionHQ-MGMT"
+  tasks:
+    # In this scenario the partner node is deployed automatically
+    - include_role: 
+        name: deploy_ovf_vsim
+      vars:
+        vm_name:               "cluster-01"  
+        partner_name:          "cluster-02"
+        vm_datastore:          "SSD-HIGH-PERF"
+        data_network:          "Esxi-VM-Network"
+        cluster_network:       "ESXi-SQLCluster"
+        ontap_cluster_name:    "PHARMAX-HQ"
+        ontpa_cluster_mgmt_ip: "192.168.7.60"
+        sys_serial_number:     "621803000017"
+        partner_serial:        "621803000018"
+        ontap_node_mgmt_ip:    "192.168.7.61"  
+        partner_ip:            "192.168.7.62"
+        ontap_netmask:         "255.255.255.0"
+        ontap_gateway:         "192.168.7.254"
+        ontap_dns_domain:      "pharmax.local"
+        ontap_dns_server:      "192.168.5.1"
+        disk_model:            "vscsi"
+        shelf0_disk_count:     12  
+        shelf0_disk_size:      8192
+        shelf1_disk_count:     12  
+        shelf1_disk_size:      8192
+        adpv2_enabled:         true
+        shelf_disk_provisioning:  "eagerzeroedthick"
+        ontap_password:        "P@ssw0rd"
+        fake_ssd_disk_size:    8192
+        bootargs:              ["setenv console comconsole","setenv root-uses-shared-disks? true", "setenv root-uses-shared-ssds? true", "setenv allow-flash-optimized? true", "setenv bootarg.init.flash_optimized true"]
+
