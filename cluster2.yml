@@ -14,19 +14,16 @@
         name: deploy_ovf_vsim
       vars:
         force:                 true
-        vm_name:               "cluster-01"  
-        partner_name:          "cluster-02"
+        vm_name:               "PHARMAX-DR-01"  
         vm_datastore:          "SSD-HIGH-PERF"
-        data_network:          "Esxi-VM-Network"
-        cluster_network:       "ESXi-SQLCluster"
-        ontap_cluster_name:    "PHARMAX-HQ"
-        ontpa_cluster_mgmt_ip: "192.168.7.60"
-        sys_serial_number:     "000000000070"
-        partner_serial:        "000000000071"
-        ontap_node_mgmt_ip:    "192.168.7.61"  
-        partner_ip:            "192.168.7.62"
+        data_network:          "Esxi-VM-Network-DR"
+        cluster_network:       "ESX-NSX-VXLAN"
+        ontap_cluster_name:    "PHARMAX-DR"
+        ontpa_cluster_mgmt_ip: "10.10.33.16"
+        sys_serial_number:     "000000000072"
+        ontap_node_mgmt_ip:    "10.10.33.14"  
         ontap_netmask:         "255.255.255.0"
-        ontap_gateway:         "192.168.7.254"
+        ontap_gateway:         "10.10.33.254"
         ontap_dns_domain:      "pharmax.local"
         ontap_dns_server:      "192.168.5.1"
         disk_model:            "vscsi"
@@ -39,6 +36,6 @@
         ontap_password:        "P@ssw0rd"
         fake_ssd_disk_size:    12288
         serial_ports:          true
-        serial_tcp_port:       1026
-        bootargs:              ["setenv console comconsole,vidconsole","setenv comconsole_speed 115200","setenv root-uses-shared-disks? true", "setenv root-uses-shared-ssds? true", "setenv allow-flash-optimized? true", "setenv bootarg.init.flash_optimized true", "setenv bootarg.vm.no_poweroff_on_halt false"]
+        serial_tcp_port:       1025
+        bootargs:              ["setenv console comconsole","setenv root-uses-shared-disks? false", "setenv root-uses-shared-ssds? false", "setenv allow-flash-optimized? true", "setenv bootarg.init.flash_optimized true", "setenv bootarg.vm.no_poweroff_on_halt false"]
 

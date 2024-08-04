@@ -50,17 +50,6 @@
   include_tasks: add_nics.yml
   when: vm_num_nics|int > 4
 
-- set_fact:
-    serial_ports:
-      - type: 'pipe'
-        pipe_name: '\\.\pipe\{{ vm_name}}_com1'
-        endpoint: 'client'
-      - type: 'pipe'
-        pipe_name: '\\.\pipe\{{ vm_name}}_com2'
-        endpoint: 'client'
-  when: 
-    - serial_ports|default(false) is true
-
 # Create serial ports
 - name: Create multiple serial ports with Backing type - network, pipe, device and file
   community.vmware.vmware_guest_serial_port:
@@ -69,7 +58,10 @@
     password: "{{ vcenter_password }}"
     validate_certs: no 
     name: '{{ vm_name }}'
-    backings: "{{serial_ports}}"
+    backings: 
+      - type: 'network'
+        service_uri: 'telnet://192.168.5.253:{{serial_tcp_port}}'
+        endpoint: 'server'
   delegate_to: localhost
   register: create_serial_ports
   when: 

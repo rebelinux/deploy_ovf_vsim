@@ -1,5 +1,5 @@
 # Path to the Simulate ONTAP OVA File
-ovf_version: "9.9.1"
+ovf_version: "9.11.1"
 ovf_file:    "{{ role_path }}/files/vsim-netapp-DOT{{ ovf_version }}-cm_nodar.ova"
 
 # Default action is to create.  
