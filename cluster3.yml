@@ -14,28 +14,28 @@
         name: deploy_ovf_vsim
       vars:
         force:                 true
-        vm_name:               "PHARMAX-DR-01"  
+        vm_name:               "PHARMAX-EDGE-01"  
         vm_datastore:          "SSD-HIGH-PERF"
-        data_network:          "Esxi-VM-Network-DR"
-        cluster_network:       "ESX-NSX-VXLAN"
-        ontap_cluster_name:    "PHARMAX-DR"
-        ontap_cluster_mgmt_ip: "10.10.33.16"
+        data_network:          "VMWARE-LAB"
+        cluster_network:       "GOAD-LAN"
+        ontap_cluster_name:    "PHARMAX-EDGE"
+        ontap_cluster_mgmt_ip: "172.23.4.16"
         sys_serial_number:     "4082368507"
-        ontap_node_mgmt_ip:    "10.10.33.14"  
+        ontap_node_mgmt_ip:    "172.23.4.14"  
         ontap_netmask:         "255.255.255.0"
-        ontap_gateway:         "10.10.33.254"
+        ontap_gateway:         "172.23.4.254"
         ontap_dns_domain:      "pharmax.local"
         ontap_dns_server:      "192.168.5.1"
         disk_model:            "vscsi"
         shelf0_disk_count:     12  
-        shelf0_disk_size:      12288
+        shelf0_disk_size:      8192
         shelf1_disk_count:     12  
-        shelf1_disk_size:      12288
+        shelf1_disk_size:      8192
         adpv2_enabled:         true
         shelf_disk_provisioning:  "eagerzeroedthick"
         ontap_password:        "P@ssw0rd"
-        fake_ssd_disk_size:    12288
+        fake_ssd_disk_size:    8192
         serial_ports:          false
-        serial_tcp_port:       1025
+        serial_tcp_port:       1028
         bootargs:              ["setenv root-uses-shared-disks? false", "setenv root-uses-shared-ssds? false", "setenv allow-flash-optimized? true", "setenv bootarg.init.flash_optimized true", "setenv bootarg.vm.no_poweroff_on_halt false"]
 
