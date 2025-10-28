@@ -15,6 +15,7 @@
       vars:
         force: true
         ontap_location: "HQ"
+        add_nodes_by_serial: "4034389062"
         node_setup_delay: 120
         vm_name: "cluster-01"
         partner_name: "cluster-02"
@@ -54,11 +55,11 @@
         serial_tcp_port_node2: 1027
         bootargs:
           [
-            "setenv console comconsole,vidconsole",
-            "setenv comconsole_speed 115200",
-            "setenv root-uses-shared-disks? true",
-            "setenv root-uses-shared-ssds? true",
-            "setenv allow-flash-optimized? true",
-            "setenv bootarg.init.flash_optimized true",
-            "setenv bootarg.vm.no_poweroff_on_halt false",
+            "console comconsole,vidconsole",
+            "comconsole_speed 115200",
+            "root-uses-shared-disks? true",
+            "root-uses-shared-ssds? true",
+            "allow-flash-optimized? true",
+            "bootarg.init.flash_optimized true",
+            "bootarg.vm.no_poweroff_on_halt false",
           ]
