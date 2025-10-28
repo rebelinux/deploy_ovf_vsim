@@ -1,44 +1,64 @@
 ---
-- hosts: localhost 
+- hosts: localhost
   name: Deploy a 2-node ONTAP Simulator HA Pair (experimental)
   gather_facts: false
-  vars: 
-    vcenter_address:  "vcenter-01v.pharmax.local"
+  vars:
+    vcenter_address: "vcenter-01v.pharmax.local"
     vcenter_username: "administrator@vsphere.local"
     vcenter_password: "P@ssw0rd"
     vcenter_datacenter: "PHARMAX-VSI-DC"
-    vcenter_cluster:    "RegionHQ-MGMT"
+    vcenter_cluster: "RegionHQ-MGMT"
   tasks:
     # In this scenario the partner node is deployed automatically
-    - include_role: 
+    - include_role:
         name: deploy_ovf_vsim
       vars:
-        force:                 true
-        vm_name:               "cluster-01"  
-        partner_name:          "cluster-02"
-        vm_datastore:          "SSD-HIGH-PERF"
-        data_network:          "Esxi-VM-Network"
-        cluster_network:       "ESXi-SQLCluster"
-        ontap_cluster_name:    "PHARMAX-HQ"
+        force: true
+        ontap_location: "HQ"
+        node_setup_delay: 120
+        vm_name: "cluster-01"
+        partner_name: "cluster-02"
+        vm_datastore: "SSD-HIGH-PERF"
+        data_network: "Esxi-VM-Network"
+        cluster_network: "ESXi-SQLCluster"
+        ontap_cluster_name: "PHARMAX-HQ"
         ontap_cluster_mgmt_ip: "192.168.7.60"
-        sys_serial_number:     "4082368511"
-        partner_serial:        "4034389062"
-        ontap_node_mgmt_ip:    "192.168.7.61"  
-        partner_ip:            "192.168.7.62"
-        ontap_netmask:         "255.255.255.0"
-        ontap_gateway:         "192.168.7.254"
-        ontap_dns_domain:      "pharmax.local"
-        ontap_dns_server:      "192.168.5.1"
-        disk_model:            "vscsi"
-        shelf0_disk_count:     12  
-        shelf0_disk_size:      12288
-        shelf1_disk_count:     12  
-        shelf1_disk_size:      12288
-        adpv2_enabled:         true
-        shelf_disk_provisioning:  "eagerzeroedthick"
-        ontap_password:        "P@ssw0rd"
-        fake_ssd_disk_size:    12288
-        serial_ports:          false
-        serial_tcp_port:       1026
-        bootargs:              ["setenv console comconsole,vidconsole","setenv comconsole_speed 115200","setenv root-uses-shared-disks? true", "setenv root-uses-shared-ssds? true", "setenv allow-flash-optimized? true", "setenv bootarg.init.flash_optimized true", "setenv bootarg.vm.no_poweroff_on_halt false"]
-
+        sys_serial_number: "4082368511"
+        partner_serial: "4034389062"
+        ontap_node_mgmt_ip: "192.168.7.61"
+        partner_ip: "192.168.7.62"
+        ontap_netmask: "255.255.255.0"
+        ontap_gateway: "192.168.7.254"
+        ontap_dns_domain: "pharmax.local"
+        ontap_dns_server: "192.168.5.1"
+        disk_model: "vscsi"
+        shelf0_disk_count: 12
+        shelf0_disk_size: 2048
+        shelf1_disk_count: 12
+        shelf1_disk_size: 2048
+        adpv2_enabled: true
+        shelf_disk_provisioning: "eagerzeroedthick"
+        ontap_password: "P@ssw0rd"
+        fake_ssd_disk_size: 2048
+        serial_ports:
+          - type: "network"
+            service_uri: "telnet://192.168.5.253:{{ serial_tcp_port_node1 }}"
+            direction: "server"
+            yield_on_poll: true
+        partner_serial_ports:
+          - type: "network"
+            service_uri: "telnet://192.168.5.253:{{ serial_tcp_port_node2 }}"
+            direction: "server"
+            yield_on_poll: true
+        serial_tcp_port_node1: 1026
+        serial_tcp_port_node2: 1027
+        bootargs:
+          [
+            "setenv console comconsole,vidconsole",
+            "setenv comconsole_speed 115200",
+            "setenv root-uses-shared-disks? true",
+            "setenv root-uses-shared-ssds? true",
+            "setenv allow-flash-optimized? true",
+            "setenv bootarg.init.flash_optimized true",
+            "setenv bootarg.vm.no_poweroff_on_halt false",
+          ]
